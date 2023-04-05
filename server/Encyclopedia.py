@@ -158,13 +158,13 @@ class Encyclopedia():
         areas = [record['p.name'] for record in results_areas]
         country = [record['p.name'] for record in results_country]
         
-        distri_dict = {"省份": provinces, "地区": areas, "国家": country}
+        distri_dict = {"province": provinces, "area": areas, "country": country}
         self.output_node_attributes(self.distri_attris, distri_dict, template_dict)
         return_dict.update(distri_dict)
         # 2.2查询该物种的界门纲目科属并输出字符串
         results_family = self.graph.run("MATCH (:Species {name: $name})-[:type_of]->(g:Genus)-[:subclass_of]->(f:Family)-[:subclass_of]->(o:Order)-[:subclass_of]->(c:Class)-[:subclass_of]->(p:Phylum)-[:subclass_of]->(k:Kingdom) RETURN g.name, f.name, o.name, c.name, p.name, k.name", name=plant_sci_name)
         results_family = results_family.data()[0]
-        family_map = {'g.name': '属', 'f.name': '科', 'o.name': '目', 'c.name': '纲', 'p.name': '门', 'k.name': '界'}
+        family_map = {'g.name': 'genus', 'f.name': 'family', 'o.name': 'order', 'c.name': 'class', 'p.name': 'phylum', 'k.name': 'kingdom'}
         results_family = {family_map[key]: results_family[key] for key in family_map}
         # print(results_family)
         self.output_node_attributes(self.family_attris, results_family, template_dict, isFamilyOutput=True)
@@ -503,7 +503,7 @@ class Encyclopedia():
         query = "MATCH (k: Kingdom) RETURN k.name"
         result = self.graph.run(query)
         result_lst = [record["k.name"] for record in result]
-        return result_lst[0]    # type: str
+        return result_lst    # type: list[str]
 
     def get_phylum(self, kingdom):
         query = "MATCH (p: Phylum)-[:subclass_of]->(k:Kingdom) WHERE k.name = '%s' RETURN p.name" % kingdom

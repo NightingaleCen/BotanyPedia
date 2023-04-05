@@ -1,7 +1,7 @@
 <template>
     <BackButton />
     <div class="classification-folder">
-        <Folder current-attribute="family" :opened-folder="openedFolder" />
+        <Folder current-attribute="classification" :opened-folder="openedFolder" />
     </div>
 </template>
 

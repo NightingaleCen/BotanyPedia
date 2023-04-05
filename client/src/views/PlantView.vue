@@ -16,7 +16,7 @@
             <p>功用分布</p>
         </var-button>
 
-        <var-popup v-model:show="displayPopup">
+        <var-popup v-model:show="displayPopup" position="top" @click="displayPopup = false">
             <component :is="currentComponent" :info="info"></component>
         </var-popup>
 
@@ -27,6 +27,7 @@
 import { ref, onMounted, computed } from 'vue';
 import BackButton from '../components/BackButton.vue';
 import PlantFlora from '../components/PlantFlora.vue';
+import axios from 'axios';
 
 const props = defineProps(['canonicalName'])
 
@@ -38,11 +39,17 @@ const currentComponent = computed(() => { console.log(showComponent); return sho
 
 // just for test
 onMounted(() => {
-    info.value.imageLink = '../src/assets/logo.jpeg'
-    info.value.chineseName = '中文名'
-    info.value.canonicalName = props.canonicalName
-    info.value.family = ["科", "属"]
-    info.value.description = "2013年大西洋飓风季是继1994年以来第一个没有大型飓风形成的大西洋飓风季。热带风暴安德烈亚是全季首场风暴，于6月5日形成，最后一个气旋则是场没有命名的亚热带风暴，于12月7日消散。全年只有飓风英格丽德和温贝托达到飓风强度。热带风暴安德烈亚是唯一登陆美国的风暴，从佛罗里达州登上美国东岸，导致4人遇难。7月上旬，热带风暴尚塔尔从背风群岛经过，造成1人丧生。热带风暴多利安、埃琳以及飓风温贝托只给佛得角群岛带去了狂风天气。墨西哥是本季受灾最严重的国家，飓风英格丽德、第八号热带低气压、热带风暴巴里和热带风暴费尔南德均在该国登陆，其中单英格丽德就造成至少23人死亡，经济损失达15亿美元。"
+    axios.get("http://localhost:8080/queryInfo", { params: { name: props.canonicalName } }).then(
+        (response) => {
+            let data = response.data
+            info.value.imageLink = '../src/assets/logo.jpeg'
+            info.value.chineseName = data['中文名']
+            info.value.canonicalName = props.canonicalName
+            info.value.family = [data.kingdom, data.phylum, data.class, data.order, data.family, data.genus]
+            info.value.description = data['描述'].replace(/\r\n/g, "<br>&emsp;&emsp;")
+
+        }
+    )
 })
 
 function showPopup(component) {

@@ -1,12 +1,14 @@
 from flask import Flask, request, redirect, url_for, abort, render_template, send_file
+from flask_cors import *
 import os 
 from Encyclopedia import Encyclopedia
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 pedia = Encyclopedia()
 
 
 # 根据植物学名，返回植物指定属性的值
-@app.route('/query', methods=['GET'])
+@app.route('/queryInfo', methods=['GET'])
 def query():
     name = request.args.get('name') # 获取学名 TODO:两种获取方式，另一种可能是route后面('/query/<something>')
     plant_dict = pedia.query(name)  # {attri1: ..., atrri2: ...}
@@ -70,20 +72,20 @@ def get_image():    # TODO:这是上传图片之后跳转到的url
 
 """百科系统"""
 # 1.根据中文名/别名/学名查询植物
-@app.route('/query_by_name', methods=['GET'])
+@app.route('/searchName', methods=['GET'])
 def query_by_name():
     # name是客户端输入的主体内容
-    name = request.form.get('name') # TODO:'name'是form框的名字
+    name = request.args.get('name') # TODO:'name'是form框的名字
     plant_list = pedia.query_by_names(name)
     return plant_list   # 这里返回跟这个name相关的所有植物的学名
     # type: list[str]
     # 返回的name list是用来展示候选的植物选项的
 
 # 2.按分类浏览
-@app.route('/query_by_classification', methods=['GET'])
+@app.route('/classification', methods=['GET'])
 def query_by_classification():
     # 点进了“按分类浏览”后，进入本页面
-    return pedia.get_kingdom()  # type: str
+    return pedia.get_kingdom()  # type: list[str]
 
 @app.route('/kingdom', methods=['GET'])
 def kingdom2phylum():
@@ -92,7 +94,7 @@ def kingdom2phylum():
     # 在这个页面下，用户选择phylum
     kingdom = request.args.get('kingdom')
     phylum_lst = pedia.get_phylum(kingdom)
-    return phylum_lst  # type: str
+    return phylum_lst  # type: list[str]
 
 
 @app.route('/phylum', methods=['GET'])
@@ -143,7 +145,7 @@ def query_genus():
 
 
 # 3.根据国家/地区/省份查询
-@app.route('/query_by_location', methods=['GET'])
+@app.route('/distribution', methods=['GET'])
 def query_by_location():
     # 点进了“按地点浏览”后，进入本页面
     return pedia.get_country() # type: list[str]

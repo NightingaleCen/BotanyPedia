@@ -13,8 +13,11 @@
             </RouterLink>
             <var-breadcrumb>{{ info.chineseName }}</var-breadcrumb>
         </var-breadcrumbs>
-        <var-card class="flora-card" :title="info.chineseName" :subtitle="info.canonicalName"
-            :description="info.description" />
+        <var-card class="flora-card" :title="info.chineseName" :subtitle="info.canonicalName">
+            <template #description>
+                <div class="flora-text" v-html="info.description"></div>
+            </template>
+        </var-card>
         <!--添加引用出处-->
     </div>
 </template>
@@ -38,5 +41,9 @@ const props = defineProps(['info'])
 
 [class$="subtitle"] {
     font-style: italic;
+}
+
+.flora-text {
+    text-align: start;
 }
 </style>

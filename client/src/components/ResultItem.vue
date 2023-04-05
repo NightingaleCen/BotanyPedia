@@ -10,8 +10,22 @@
 
 <script setup>
 import router from '@/router'
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
 
-const props = defineProps(['canonicalName', 'chineseName', 'imageLink'])
+const props = defineProps(['canonicalName'])
+const chineseName = ref('')
+const imageLink = ref('')
+
+onMounted(() => {
+    axios.get("http://localhost:8080/queryInfo", { params: { name: props.canonicalName } }).then(
+        (response) => {
+            let data = response.data
+            imageLink.value = '../src/assets/logo.jpeg'
+            chineseName.value = data['中文名']
+        }
+    )
+})
 
 function jump() {
     router.push({ name: "plant", params: { canonicalName: props.canonicalName } })
