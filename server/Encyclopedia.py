@@ -5,7 +5,7 @@ import json
 
 class Encyclopedia():
     def __init__(self) -> None:
-        self.graph = Graph('bolt://localhost:7687', auth = ('neo4j', 'Wsh021006'))
+        self.graph = Graph('bolt://localhost:7687', auth = ('neo4j', 'botanypedia'))
         
         # 植物的性状
         self.charas = ["生活型", "高度", "叶片形状", "叶片颜色", "花朵形状", "花朵颜色", "果实形状", "果实颜色",
