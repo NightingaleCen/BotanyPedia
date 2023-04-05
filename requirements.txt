@@ -1,0 +1,5 @@
+Flask==2.2.3
+py2neo==2021.2.3
+Pillow==9.4.0
+torch==2.0.0
+transformers==4.27.3

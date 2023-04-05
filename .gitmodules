@@ -1,0 +1,3 @@
+[submodule "server/PlantInferer"]
+	path = server/PlantInferer
+	url = https://github.com/NightingaleCen/PlantInferer.git
