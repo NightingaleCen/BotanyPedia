@@ -9,18 +9,20 @@ import BookIcon from '../components/icons/IconBook.vue'
     <img src="../assets/logo.jpeg" class="logo" alt="Logo">
     <h1 class="title">BotanyPedia</h1>
   </header>
-  <main>
-    <nav>
-      <router-link to="/search" class="nav-link">
+  <var-row class="index-entrance">
+    <var-col :span="12">
+      <RouterLink to="/search" class="nav-link">
         <SearchIcon />
         <span class="label">识别</span>
-      </router-link>
-      <router-link to="/database" class="nav-link">
+      </RouterLink>
+    </var-col>
+    <var-col :span="12">
+      <RouterLink to="/database" class="nav-link">
         <BookIcon />
         <span class="label">百科</span>
-      </router-link>
-    </nav>
-  </main>
+      </RouterLink>
+    </var-col>
+  </var-row>
 </template>
 
 <style>
@@ -43,7 +45,7 @@ header {
   color: #2E8540;
 }
 
-nav {
+.index-entrance {
   padding-top: 150px;
   text-align: center;
 }

@@ -1,8 +1,9 @@
 <template>
-    <BackButton class="back-button" />
+    <BackButton />
     <SearchUploader @submit=submitImage />
     <var-popup v-model:show="showPopup">
-        <Loading is-loading="isLoading" />
+        <Loading v-if="isLoading" />
+        <SearchResult v-if="isDisplayingResult" v-bind="test" />
     </var-popup>
 </template>
 
@@ -11,25 +12,31 @@ import { ref } from 'vue';
 import BackButton from '../components/BackButton.vue';
 import SearchUploader from '../components/SearchUploader.vue'
 import Loading from '../components/Loading.vue'
+import SearchResult from '../components/SearchResult.vue';
 
 const showPopup = ref(false)
 const isLoading = ref(false)
-const currentPopupPage = ref(null)
+const isDisplayingResult = ref(false)
+
+const test = {
+    imageLink: '../src/assets/logo.jpeg',
+    canonicalName: 'CanonicalName',
+    chineseName: '中文名'
+}
+
 
 
 function submitImage(file) {
     showPopup.value = true
-    isLoading = true
+    isDisplayingResult.value = false
+    isLoading.value = true
     console.log(file)
+    setTimeout(() => {
+        isLoading.value = false
+        isDisplayingResult.value = true
+    }, 1000);
+
+
 }
 
 </script>
-
-<style>
-.back-button {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 15px;
-}
-</style>

@@ -1,7 +1,11 @@
 <template>
-    <button @click="goBack">
-        <LeftIcon />
-    </button>
+    <div class="back-header">
+        <h1 class="page-title">
+            <button @click="goBack" class="back-button">
+                <LeftIcon />
+            </button>BotanyPedia
+        </h1>
+    </div>
 </template>
   
 <script setup>
@@ -15,6 +19,27 @@ function goBack() {
 </script>
 
 <style>
+.back-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 15px;
+
+}
+
+.back-button {
+    position: absolute;
+    left: 0;
+}
+
+.page-title {
+    text-align: center;
+    font-weight: bold;
+    color: #2E8540;
+
+}
+
 button {
     background: none;
     border: none;
