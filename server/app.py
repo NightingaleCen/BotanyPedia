@@ -69,7 +69,7 @@ def query_by_name():
     # 返回的name list是用来展示候选的植物选项的
 
 # 2.按分类浏览
-@app.route('query_by_classification', methods=['GET'])
+@app.route('/query_by_classification', methods=['GET'])
 def query_by_classification():
     # 点进了“按分类浏览”后，进入本页面
     return pedia.get_kingdom()  # type: str
