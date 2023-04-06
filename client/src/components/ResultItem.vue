@@ -22,7 +22,7 @@ onMounted(() => {
         (response) => {
             let data = response.data
             imageLink.value = "http://localhost:8080" + data['image']
-            chineseName.value = data['中文名']
+            chineseName.value = data['中文名'][0]
         }
     )
 })

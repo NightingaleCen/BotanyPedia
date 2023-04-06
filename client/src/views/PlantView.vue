@@ -46,12 +46,12 @@ onMounted(() => {
             let data = response.data
             console.log(data)
             info.value.imageLink = "http://localhost:8080" + data['image']
-            info.value.chineseName = data['中文名']
+            info.value.chineseName = data['中文名'][0]
             info.value.nickname = data['别名']
             info.value.canonicalName = props.canonicalName
             info.value.family = [data.kingdom, data.phylum, data.class, data.order, data.family, data.genus]
-            info.value.description = data['描述'].replace(/\r\n/g, "<br>&emsp;&emsp;")
-            info.value.lifeForm = data['生活型']
+            info.value.description = data['描述'][0].replace(/\r\n/g, "<br>&emsp;&emsp;")
+            info.value.lifeForm = data['生活型'][0]
             info.value.leafShape = data['叶片形状']
             info.value.leafColor = data['叶片颜色']
             info.value.flowerShape = data['花朵形状']

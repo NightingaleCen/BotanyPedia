@@ -1,10 +1,12 @@
 from flask import Flask, request, redirect, url_for, abort, render_template, send_file
 from flask_cors import *
+from PlantInferer import *
 import os 
 from Encyclopedia import Encyclopedia
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 pedia = Encyclopedia()
+inferer = Classifier()
 
 
 # 根据植物学名，返回植物指定属性的值
@@ -58,23 +60,16 @@ def integrate_information():
 # 2.然后前端把这个list又返回给后端路由/integrate_information，然后返回若干植物的字典
 
 # 1.从上传的图像中进行获取
-# ↓用于渲染上传图片的页面
-@app.route('/upload_image') # TODO:这是示例代码，需要修改以适配前端
-def index():
-    return render_template('upload.html')
-    # return '1'
 # ↓当通过POST得到了img之后，就保存图片到本地
-@app.route('/uploadImage', methods=['POST'])
+@app.route('/uploadImage', methods=['POST']) #TODO: 图片格式判断
 def get_image():    # TODO:这是上传图片之后跳转到的url
     # Get the uploaded file
-    img = request.files['image']    # img是一个FileStorage类型的对象
-    print('type of img is', type(img))
-    # Save the file to disk
-    filename = img.filename
-    img.save(os.path.join('uploads', filename))
+    img = request.files['file']    # img是一个FileStorage类型的对象
 
+    result = inferer.infer(img)
+    result = {key:float(value) for (key, value) in result.items() if (value/max(result.values()))> 0.3}
     # Return a success response
-    return 'File uploaded successfully!'
+    return result
 
 
 

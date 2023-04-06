@@ -2,7 +2,7 @@
     <div class="uploader-area">
         <p class="uploader-text">请上传不超过10M的植物图片</p>
         <var-uploader class="uploader" v-model="files" @after-read="handleAfterRead" :maxlength="1" />
-        <button @click="$emit('submit', files)" v-show="submitActive">
+        <button @click="$emit('submit', files[0])" v-show="submitActive">
             <UpIcon class="btn" />
         </button>
     </div>
@@ -15,6 +15,7 @@ import UpIcon from './icons/IconUp.vue';
 const files = ref([])
 const submitActive = ref(false)
 
+defineEmits(['submit'])
 
 function handleAfterRead(file) {
     if (file.file.size <= 10 * 1024 * 1024) {

@@ -31,10 +31,14 @@ function submitImage(file) {
     showPopup.value = true
     isDisplayingResult.value = false
     isLoading.value = true
-    axios.post("http://localhost:8080/uploadImage", { image: file }).then((response) => {
+
+    const formData = new FormData()
+    formData.append('file', file.file);
+    axios.post("http://localhost:8080/uploadImage", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    }).then((response) => {
         isLoading.value = false
         isDisplayingResult.value = true
-        console.log(response)
     })
 }
 
