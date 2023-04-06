@@ -460,7 +460,9 @@ class Encyclopedia():
     def query_by_names(self, name: str):
         # name可以是中文名、别名、学名
         # 返回的是候选植物种类的dict
-
+        
+        if name.isalpha():
+            name = name.lower()
         # 中文名查询
         query_c_name_node = "MATCH (s:Species) WHERE s.中文名 Contains '%s' RETURN s.name" % name
         query_common_name_node = "MATCH (s:Species)-[:has_common_name]->(c:CommonName) WHERE c.name Contains '%s' RETURN s.name" % name
@@ -473,6 +475,14 @@ class Encyclopedia():
         result_sci_name_set = set([record["s.name"] for record in result_sci_name_node])
         all_name_set = result_c_name_set.union(result_common_name_set)
         all_name_set = all_name_set.union(result_sci_name_set)
+        # 模糊匹配英文
+        # 全部转为小写
+        if name.isalpha():
+            titleName = name.title()
+        query_sci_name_titled_node = query_sci_name_node = "MATCH (s:Species) WHERE s.name Contains '%s' RETURN s.name" % titleName
+        result_sci_name_titled_node = self.graph.run(query_sci_name_titled_node)
+        result_sci_name_titled_set = set([record["s.name"] for record in result_sci_name_titled_node])
+        all_name_set = all_name_set.union(result_sci_name_titled_set)
         all_name_lst = list(all_name_set)
         # return_dict = {plant: self.query(plant) for plant in all_name_lst}
         return all_name_lst
