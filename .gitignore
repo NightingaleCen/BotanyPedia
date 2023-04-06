@@ -6,3 +6,4 @@ __pycache__
 server/images/*
 server/uploads/*
 server/test.py
+build_graph/*.json
