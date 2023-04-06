@@ -298,9 +298,10 @@ class Encyclopedia():
                 
                 return_dict = {}
                 for attri in common_but_different_attri:
-                    return_dict[attri] = {}
-                    for plant in preliminary_results:
-                        return_dict[attri][plant] = plant_chara_dict[plant][attri]
+                    if '形状' in attri or '颜色' in attri:
+                        return_dict[attri] = {}
+                        for plant in preliminary_results:
+                            return_dict[attri][plant] = plant_chara_dict[plant][attri]
                 return return_dict
             
             else:
