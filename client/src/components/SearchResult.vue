@@ -9,7 +9,23 @@
 </template>
 
 <script setup>
-defineProps(['imageLink', 'canonicalName', 'chineseName'])
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+const props = defineProps(['canonicalName'])
+
+const imageLink = ref("")
+const chineseName = ref("")
+
+onMounted(() => {
+    axios.get("http://localhost:8080/queryInfo", { params: { name: props.canonicalName } }).then(
+        (response) => {
+            let data = response.data
+            imageLink.value = "http://localhost:8080" + data['image']
+            chineseName.value = data['中文名'][0]
+        }
+    )
+})
 </script>
 
 <style>

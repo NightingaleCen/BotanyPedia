@@ -3,7 +3,7 @@
     <SearchUploader @submit=submitImage />
     <var-popup v-model:show="showPopup">
         <Loading v-if="isLoading" />
-        <SearchResult v-if="isDisplayingResult" v-bind="test" />
+        <SearchResult v-if="isDisplayingResult" :canonical-name="canonicalName" />
     </var-popup>
 </template>
 
@@ -19,11 +19,7 @@ const showPopup = ref(false)
 const isLoading = ref(false)
 const isDisplayingResult = ref(false)
 
-const test = {
-    imageLink: '../src/assets/logo.jpeg',
-    canonicalName: 'CanonicalName',
-    chineseName: '中文名'
-}
+const canonicalName = ref("")
 
 
 
@@ -37,8 +33,14 @@ function submitImage(file) {
     axios.post("http://localhost:8080/uploadImage", formData, {
         headers: { "Content-Type": "multipart/form-data" }
     }).then((response) => {
-        isLoading.value = false
-        isDisplayingResult.value = true
+        let candidates = response.data
+        if (Object.keys(candidates).length === 1) {
+            canonicalName.value = Object.keys(candidates)[0]
+            isLoading.value = false
+            isDisplayingResult.value = true
+        } else {
+            console.log(Object.keys(candidates))
+        }
     })
 }
 
