@@ -5,6 +5,7 @@
             <ResultItem :canonical-name="item" />
             <var-divider class="devider" hairline v-if="resultItems.length > 1" />
         </template>
+        <var-divider class="no-result" hairline description="没有结果" v-if="resultItems.length === 0" />
     </div>
 </template>
 
@@ -36,5 +37,9 @@ onMounted(() => {
 
 .devider {
     --divider-text-margin: 12px 0;
+}
+
+.no-result {
+    text-align: center;
 }
 </style>

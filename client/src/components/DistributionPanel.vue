@@ -1,6 +1,7 @@
 <template>
     <div class="distribution-panel">
-        <p class="distribution-item">分布：<span>{{ info.distribution.join('、') }}</span></p>
+        <p class="distribution-item" v-if="info.distribution !== undefined">
+            分布：<span>{{ info.distribution.join('、') }}</span></p>
         <p class="distribution-item" v-if="info.environmantalValue !== undefined">
             环境价值：<span>{{ info.environmantalValue.join("、") }}</span>
         </p>

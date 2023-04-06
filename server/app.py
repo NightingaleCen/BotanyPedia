@@ -64,7 +64,7 @@ def index():
     return render_template('upload.html')
     # return '1'
 # ↓当通过POST得到了img之后，就保存图片到本地
-@app.route('/get_image', methods=['POST'])
+@app.route('/uploadImage', methods=['POST'])
 def get_image():    # TODO:这是上传图片之后跳转到的url
     # Get the uploaded file
     img = request.files['image']    # img是一个FileStorage类型的对象

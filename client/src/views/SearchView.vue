@@ -9,6 +9,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import axios from 'axios';
 import BackButton from '../components/BackButton.vue';
 import SearchUploader from '../components/SearchUploader.vue'
 import Loading from '../components/Loading.vue'
@@ -30,13 +31,11 @@ function submitImage(file) {
     showPopup.value = true
     isDisplayingResult.value = false
     isLoading.value = true
-    console.log(file)
-    setTimeout(() => {
+    axios.post("http://localhost:8080/uploadImage", { image: file }).then((response) => {
         isLoading.value = false
         isDisplayingResult.value = true
-    }, 1000);
-
-
+        console.log(response)
+    })
 }
 
 </script>
