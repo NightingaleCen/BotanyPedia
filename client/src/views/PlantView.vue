@@ -42,7 +42,7 @@ onMounted(() => {
     axios.get("http://localhost:8080/queryInfo", { params: { name: props.canonicalName } }).then(
         (response) => {
             let data = response.data
-            info.value.imageLink = '../src/assets/logo.jpeg'
+            info.value.imageLink = "http://localhost:8080" + data['image']
             info.value.chineseName = data['中文名']
             info.value.canonicalName = props.canonicalName
             info.value.family = [data.kingdom, data.phylum, data.class, data.order, data.family, data.genus]
@@ -61,7 +61,7 @@ function showPopup(component) {
 
 <style>
 .plant-display {
-    margin: 25px;
+    margin-top: 50px;
     text-align: center
 }
 

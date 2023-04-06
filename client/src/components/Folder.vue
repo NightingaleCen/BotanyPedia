@@ -1,10 +1,11 @@
 <template>
-    <var-collapse v-if="currentAttribute !== 'genus'" class="top-folder" v-model="folderToOpen">
+    <var-collapse v-if="currentAttribute !== 'genus' && currentAttribute !== 'province'" class="top-folder"
+        v-model="folderToOpen">
         <var-collapse-item v-for="item in Items" :title="item" :name="item" :id="item">
             <Folder v-if="showComponent(item)" v-bind="nextProps" :current-folder-name="item" />
         </var-collapse-item>
     </var-collapse>
-    <template v-if="currentAttribute === 'genus'" v-for="item in Items">
+    <template v-if="currentAttribute === 'genus' || currentAttribute === 'province'" v-for="item in Items">
         <ResultItem class="result-items" :canonical-name="item" />
         <var-divider hairline v-if="Items.length > 1" />
     </template>
@@ -91,10 +92,34 @@ onMounted(() => {
                 Items.value = data
             }
         )
+    } else if (props.currentAttribute == "distribution") {
+        axios.get("http://localhost:8080/distribution").then(
+            (response) => {
+                let data = response.data
+                Items.value = data
+            }
+        )
+    } else if (props.currentAttribute == "country") {
+        axios.get("http://localhost:8080/country", { params: { country: props.currentFolderName } }).then(
+            (response) => {
+                let data = response.data
+                Items.value = data
+            }
+        )
     } else if (props.currentAttribute == "area") {
-        Items.value = ["地区", "地区1"]
+        axios.get("http://localhost:8080/area", { params: { area: props.currentFolderName } }).then(
+            (response) => {
+                let data = response.data
+                Items.value = data
+            }
+        )
     } else if (props.currentAttribute == "province") {
-        Items.value = ["省", "省1"]
+        axios.get("http://localhost:8080/province", { params: { province: props.currentFolderName } }).then(
+            (response) => {
+                let data = response.data
+                Items.value = data
+            }
+        )
     }
 })
 
@@ -113,10 +138,12 @@ function getNextAttribute() {
         case "family":
             return "genus"
 
+        case "distribution":
+            return "country"
+        case "country":
+            return "area"
         case "area":
             return "province"
-        case "province":
-            return "spieces"
         default:
             break
     }

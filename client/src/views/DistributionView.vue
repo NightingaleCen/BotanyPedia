@@ -1,7 +1,7 @@
 <template>
     <BackButton />
     <div class="distribution-folder">
-        <Folder current-attribute="area" :opened-folder="[]" />
+        <Folder current-attribute="distribution" :opened-folder="[]" />
     </div>
 </template>
 

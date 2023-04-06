@@ -21,7 +21,7 @@ onMounted(() => {
     axios.get("http://localhost:8080/queryInfo", { params: { name: props.canonicalName } }).then(
         (response) => {
             let data = response.data
-            imageLink.value = '../src/assets/logo.jpeg'
+            imageLink.value = "http://localhost:8080" + data['image']
             chineseName.value = data['中文名']
         }
     )

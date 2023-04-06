@@ -473,7 +473,7 @@ class Encyclopedia():
         query = "MATCH (c: Country) RETURN c.name"
         result = self.graph.run(query)
         result_lst = [record["c.name"] for record in result]
-        return result_lst[0]    # type: str
+        return result_lst    # type: list[str]
 
     def get_area(self, country):
         # 输入为国家名

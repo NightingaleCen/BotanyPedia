@@ -18,22 +18,21 @@ def query():
         return_dict = {}
         for attri in attri_wanted_lst:
             return_dict[attri] = plant_dict[attri]
-        return_dict['image'] = './images/%s.jpg' % name
+        return_dict['image'] = '/images/%s.jpg' % name
         # return_dict['image'] = './server/images/%s.jpg' % name # .表示BotanyPedia作为根目录时运行
         return return_dict
     else:
         # 返回植物图片链接
-        plant_dict['image'] = './images/%s.jpg' % name  # .表示server作为根目录时运行
+        plant_dict['image'] = '/images/%s.jpg' % name  # .表示server作为根目录时运行
         # plant_dict['image'] = './server/images/%s.jpg' % name # .表示BotanyPedia作为根目录时运行
         return plant_dict
 
 # 根据GET到的链接，返回server/images文件夹中的 <学名.jpg>文件
-@app.route('/images', methods=['GET'])
-def display_image():
+@app.route('/images/<filename>', methods=['GET'])
+def display_image(filename):
     # 从前端GET到一个链接
     # 请求报文主体信息：{link:'./images/plant_name.jpg}'
-    path = request.args.get('link')
-    return send_file(path, mimetype='image/jpeg')
+    return send_file(f'./images/{filename}', mimetype='image/jpeg')
     
 
 
