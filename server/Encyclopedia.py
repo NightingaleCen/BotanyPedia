@@ -549,8 +549,8 @@ class Encyclopedia():
 
 if __name__ == '__main__':
     pedia = Encyclopedia()
-    # pedia.query('Chrysanthemum indicum')
+    pedia.query('Prunus mume')
     # pedia.integrate_information(['Diospyros kaki', "Diospyros lotus", "Osmanthus fragrans"])
-    pedia.integrate_information(['Diospyros kaki'])
+    #pedia.integrate_information(['Prunus mume'])
     # pedia.query_by_basic_attris()
     # pedia.query_by_names('花')
