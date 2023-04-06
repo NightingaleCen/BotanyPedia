@@ -71,6 +71,24 @@ class Filter():
         with open(self.info_list_path, 'w+', encoding='utf-8') as f:
             json.dump(new_info_list_dict, f, indent=4, ensure_ascii=False, separators=(',', ': '))
 
+    def preprocess_info_list_data(self):
+        with open(self.info_list_path, 'r', encoding='utf-8') as f:
+            info_list_dict = json.load(f)
+        for plant in info_list_dict:
+            chara_dict = info_list_dict[plant]['characteristics']
+            for key in chara_dict:
+                value = chara_dict[key]
+                if (type(value) == str and value.strip() == ''):
+                    info_list_dict[plant]['characteristics'].pop(key)
+                elif type(value) == list:
+                    for item in value:
+                        if item.strip() == '':
+                            info_list_dict[plant]['characteristics'][key].remove(item)
+        with open(self.info_list_path, 'w', encoding='utf-8') as f:
+            json.dump(info_list_dict, f, indent=4, ensure_ascii=False, separators=(',', ': '))
+
+
+
     def run(self):
         plant_chara_dict = self.read_ner_result()
         plant_chara_dict, original_info_list_dict = self.read_original_info_list(plant_chara_dict)

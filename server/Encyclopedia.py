@@ -275,11 +275,11 @@ class Encyclopedia():
                             return False
                     
                     return flag
-                            
+                preliminary_results_plant_list = list(preliminary_results.keys())
                 common_but_different_attri = []
                 for chara_name in common_charas:
                     # print(preliminary_results[1:3])
-                    plant_pairs = [tuple(preliminary_results[i:i+2]) for i in range(len(preliminary_results)-1)]
+                    plant_pairs = [(p1, p2) for p1 in preliminary_results_plant_list for p2 in preliminary_results_plant_list if p1 != p2]
                     all_different = False
                     for (plant1, plant2) in plant_pairs:
                         if not isDifferent(plant_chara_dict[plant1][chara_name], plant_chara_dict[plant2][chara_name]):

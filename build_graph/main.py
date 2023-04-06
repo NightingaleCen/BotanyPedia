@@ -34,10 +34,11 @@ if __name__ == "__main__":
         # 如果存在ner_result.json，则对原始的info_list进行更新
         # filter = Filter(ner_result_path, chara_path, info_list_path, key_map_dict, chara_map_dict)
         # filter.run()
-
+        # filter.preprocess_info_list_data()    # 直接在info_list中处理掉" "这样的空格串/空串
         # 构建Graph
         graph = BotanyGraph(info_list_path)
         graph.clean_graph()
+        
         graph.build_graph()
 
     else:
