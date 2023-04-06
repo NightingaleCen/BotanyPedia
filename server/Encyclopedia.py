@@ -132,6 +132,9 @@ class Encyclopedia():
         # 1.根据学名，查找结点属性
         self.output('您要查询的植物为:'+plant_sci_name+'。\n')
         node_attri_dict = dict(node.all()[0]) # type(node.all()[0]) == Node
+        for key in node_attri_dict:
+            if type(node_attri_dict[key]) == str:
+                node_attri_dict[key] = [node_attri_dict[key]]
         # print(node_attri_dict, '\n^^^^^^^^^^^^')
         # TODO:考虑是否在每一个attri输出后加上换行符
         # 1.1.先输出基本信息
@@ -139,7 +142,6 @@ class Encyclopedia():
         return_dict.update(node_attri_dict)
         #1.2.其次，输出性状
         self.output_node_attributes(self.charas, node_attri_dict, template_dict)
-
 
         # 2.搜索所有的关系来输出结果
 
@@ -157,8 +159,14 @@ class Encyclopedia():
         provinces = [record['p.name'] for record in results_provinces]
         areas = [record['p.name'] for record in results_areas]
         country = [record['p.name'] for record in results_country]
-        
-        distri_dict = {"province": provinces, "area": areas, "country": country}
+        distri_dict = {}
+        if provinces != []:
+            distri_dict["province"] = provinces
+        elif areas != []:
+            distri_dict["area"] = areas
+        elif country != []:
+            distri_dict['country'] = country
+        # distri_dict = {"province": provinces, "area": areas, "country": country}
         self.output_node_attributes(self.distri_attris, distri_dict, template_dict)
         return_dict.update(distri_dict)
         # 2.2查询该物种的界门纲目科属并输出字符串
