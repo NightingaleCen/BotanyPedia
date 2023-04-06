@@ -10,7 +10,7 @@ pedia = Encyclopedia()
 # 根据植物学名，返回植物指定属性的值
 @app.route('/queryInfo', methods=['GET'])
 def query():
-    name = request.args.get('name') # 获取学名 TODO:两种获取方式，另一种可能是route后面('/query/<something>')
+    name = request.args.get('name') # 获取学名 TODO:两种获取方式
     plant_dict = pedia.query(name)  # {attri1: ..., atrri2: ...}
     
     attri_wanted_lst = request.args.get('attribute')   # 获取所指定的性状 type:list
@@ -18,8 +18,13 @@ def query():
         return_dict = {}
         for attri in attri_wanted_lst:
             return_dict[attri] = plant_dict[attri]
+        return_dict['image'] = './images/%s.jpg' % name
+        # return_dict['image'] = './server/images/%s.jpg' % name # .表示BotanyPedia作为根目录时运行
         return return_dict
     else:
+        # 返回植物图片链接
+        plant_dict['image'] = './images/%s.jpg' % name  # .表示server作为根目录时运行
+        # plant_dict['image'] = './server/images/%s.jpg' % name # .表示BotanyPedia作为根目录时运行
         return plant_dict
 
 # 根据GET到的链接，返回server/images文件夹中的 <学名.jpg>文件
@@ -41,12 +46,17 @@ def display_image():
 
 """植物识别系统"""
 @app.route('/integrate_information', methods=['GET'])
-def integrate_information(preliminary_results):
+def integrate_information():
     # 1.如果是只有一个植物，返回的只有一个植物的字典 
     # 2.如果是有两个及以上植物，返回的有多个植物的字典
     # 每一个字典格式为{}
+    preliminary_results = request.args.get('preliminary_results')
     return pedia.integrate_information(preliminary_results)
 
+
+# TODO:需要完成的部分：
+# 1.从前端接收图片文件，并丢进PlantInferer进行预测，得到预测结果即若干候选植物的list，并把list返回前端
+# 2.然后前端把这个list又返回给后端路由/integrate_information，然后返回若干植物的字典
 
 # 1.从上传的图像中进行获取
 # ↓用于渲染上传图片的页面
@@ -66,7 +76,6 @@ def get_image():    # TODO:这是上传图片之后跳转到的url
 
     # Return a success response
     return 'File uploaded successfully!'
-
 
 
 
