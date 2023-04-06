@@ -46,13 +46,13 @@ def display_image(filename):
 
 
 """植物识别系统"""
-@app.route('/integrate_information', methods=['GET'])
+@app.route('/integrateInformation', methods=['GET'])
 def integrate_information():
     # 1.如果是只有一个植物，返回的只有一个植物的字典 
     # 2.如果是有两个及以上植物，返回的有多个植物的字典
     # 每一个字典格式为{}
-    preliminary_results = request.args.get('preliminary_results')
-    return pedia.integrate_information(preliminary_results)
+    candidates = request.args.getlist('candidates')
+    return pedia.integrate_information(candidates)
 
 
 # TODO:需要完成的部分：

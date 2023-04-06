@@ -10,6 +10,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import qs from 'qs';
 import BackButton from '../components/BackButton.vue';
 import SearchUploader from '../components/SearchUploader.vue'
 import Loading from '../components/Loading.vue'
@@ -40,6 +41,20 @@ function submitImage(file) {
             isDisplayingResult.value = true
         } else {
             console.log(Object.keys(candidates))
+            axios.get("http://localhost:8080//integrateInformation", {
+                params: {
+                    candidates: Object.keys(candidates),
+                }, paramsSerializer: {
+                    serialize: function (params) {
+                        return qs.stringify(params, { arrayFormat: 'repeat' })
+                    }
+                },
+            }).then(
+                (response) => {
+                    let candidates_attributes = response.data
+                    console.log(candidates_attributes)
+                }
+            )
         }
     })
 }

@@ -283,7 +283,7 @@ class Encyclopedia():
                             return False
                     
                     return flag
-                preliminary_results_plant_list = list(preliminary_results.keys())
+                preliminary_results_plant_list = preliminary_results
                 common_but_different_attri = []
                 for chara_name in common_charas:
                     # print(preliminary_results[1:3])
@@ -567,8 +567,8 @@ class Encyclopedia():
 
 if __name__ == '__main__':
     pedia = Encyclopedia()
-    pedia.query('Prunus mume')
-    # pedia.integrate_information(['Diospyros kaki', "Diospyros lotus", "Osmanthus fragrans"])
+    #pedia.query('Prunus mume')
+    #pedia.integrate_information(['Vitis amurensis', 'Vitis vinifera'])
     #pedia.integrate_information(['Prunus mume'])
     # pedia.query_by_basic_attris()
     # pedia.query_by_names('花')
