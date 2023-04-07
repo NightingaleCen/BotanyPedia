@@ -41,11 +41,13 @@ function submitImage(file) {
     axios.post("http://localhost:8080/uploadImage", formData, {
         headers: { "Content-Type": "multipart/form-data" }
     }).then((response) => {
+        console.log(response.data)
         candidatesAndProbs.value = response.data
         if (Object.keys(candidatesAndProbs.value).length === 1) {
             // 如果返回的是确定的结果，则直接展示
             canonicalName.value = Object.keys(candidatesAndProbs.value)[0]
             isLoading.value = false
+            isDisplayingOptions = false
             isDisplayingResult.value = true
         } else {
             // 如果返回了多个候选结果，比较其属性并对用户提出问题

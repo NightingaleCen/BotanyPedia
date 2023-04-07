@@ -1,4 +1,4 @@
-# BotanyPedia
+# LeafyLingo
 
 ## Requirements
 > python == 3.10

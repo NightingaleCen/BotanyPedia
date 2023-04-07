@@ -7,7 +7,7 @@ import BookIcon from '../components/icons/IconBook.vue'
 <template>
   <header>
     <img src="../assets/logo.jpeg" class="logo" alt="Logo">
-    <h1 class="title">BotanyPedia</h1>
+    <h1 class="title">LeafyLingo</h1>
   </header>
   <var-row class="index-entrance">
     <var-col :span="12">

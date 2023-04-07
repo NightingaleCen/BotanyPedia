@@ -3,7 +3,7 @@
         <h1 class="page-title">
             <button @click="goBack" class="back-button">
                 <LeftIcon />
-            </button>BotanyPedia
+            </button>LeafyLingo
         </h1>
     </div>
 </template>
