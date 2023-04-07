@@ -47,7 +47,7 @@ function submitImage(file) {
             // 如果返回的是确定的结果，则直接展示
             canonicalName.value = Object.keys(candidatesAndProbs.value)[0]
             isLoading.value = false
-            isDisplayingOptions = false
+            isDisplayingOptions.value = false
             isDisplayingResult.value = true
         } else {
             // 如果返回了多个候选结果，比较其属性并对用户提出问题
