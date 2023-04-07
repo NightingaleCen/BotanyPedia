@@ -38,7 +38,7 @@ function submitImage(file) {
 
     const formData = new FormData()
     formData.append('file', file.file);
-    axios.post("http://localhost:8080/uploadImage", formData, {
+    axios.post("/api/uploadImage", formData, {
         headers: { "Content-Type": "multipart/form-data" }
     }).then((response) => {
         console.log(response.data)
@@ -53,7 +53,7 @@ function submitImage(file) {
             // 如果返回了多个候选结果，比较其属性并对用户提出问题
             candidatesAndProbs.value = filterCandidates(candidatesAndProbs.value)
 
-            axios.get("http://localhost:8080//integrateInformation", {
+            axios.get("/api/integrateInformation", {
                 params: {
                     candidates: Object.keys(candidatesAndProbs.value),
                 }, paramsSerializer: {
@@ -64,8 +64,22 @@ function submitImage(file) {
             }).then(
                 (response) => {
                     candidatesAttributes.value = response.data
-                    isLoading.value = false
-                    isDisplayingOptions.value = true
+                    if (Object.keys(candidatesAttributes.value).length === 0) {
+                        let candidatesList = []
+                        for (let candidate in candidatesAndProbs.value) {
+                            candidatesList.push({ name: candidate, prob: candidatesAndProbs.value[candidate] })
+                        }
+                        candidatesList.sort(function (a, b) { return b.prob - a.prob })
+                        canonicalName.value = candidatesList[0].name
+                        isLoading.value = false
+                        isDisplayingOptions.value = false
+                        isDisplayingResult.value = true
+                    } else {
+                        isLoading.value = false
+                        isDisplayingOptions.value = true
+                        isDisplayingResult.value = false
+                    }
+
                 }
             )
         }

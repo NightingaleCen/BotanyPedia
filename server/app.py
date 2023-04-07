@@ -4,13 +4,12 @@ from PlantInferer import *
 import os 
 from Encyclopedia import Encyclopedia
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app, resources={r'/*': {'origins': '*'}}) 
 pedia = Encyclopedia()
 inferer = Classifier()
 
-
 # 根据植物学名，返回植物指定属性的值
-@app.route('/queryInfo', methods=['GET'])
+@app.route('/api/queryInfo', methods=['GET'])
 def query():
     name = request.args.get('name') # 获取学名 TODO:两种获取方式
     plant_dict = pedia.query(name)  # {attri1: ..., atrri2: ...}
@@ -20,17 +19,17 @@ def query():
         return_dict = {}
         for attri in attri_wanted_lst:
             return_dict[attri] = plant_dict[attri]
-        return_dict['image'] = '/images/%s.jpg' % name
+        return_dict['image'] = '/api/images/%s.jpg' % name
         # return_dict['image'] = './server/images/%s.jpg' % name # .表示BotanyPedia作为根目录时运行
         return return_dict
     else:
         # 返回植物图片链接
-        plant_dict['image'] = '/images/%s.jpg' % name  # .表示server作为根目录时运行
+        plant_dict['image'] = '/api/images/%s.jpg' % name  # .表示server作为根目录时运行
         # plant_dict['image'] = './server/images/%s.jpg' % name # .表示BotanyPedia作为根目录时运行
         return plant_dict
 
 # 根据GET到的链接，返回server/images文件夹中的 <学名.jpg>文件
-@app.route('/images/<filename>', methods=['GET'])
+@app.route('/api/images/<filename>', methods=['GET'])
 def display_image(filename):
     # 从前端GET到一个链接
     # 请求报文主体信息：{link:'./images/plant_name.jpg}'
@@ -40,13 +39,13 @@ def display_image(filename):
 
 # # TODO:思考如何解析从客户端发送到服务端的选项信息，把它转换成选项号
 # TODO:最后应该可以删掉这几行！！但先再观察一下qwq
-# @app.route('/receive_option_message', methods=["GET"])
+# @app.route('/api/receive_option_message', methods=["GET"])
 # def receive_option_message(message):
 #     return None
 
 
 """植物识别系统"""
-@app.route('/integrateInformation', methods=['GET'])
+@app.route('/api/integrateInformation', methods=['GET'])
 def integrate_information():
     # 1.如果是只有一个植物，返回的只有一个植物的字典 
     # 2.如果是有两个及以上植物，返回的有多个植物的字典
@@ -61,7 +60,7 @@ def integrate_information():
 
 # 1.从上传的图像中进行获取
 # ↓当通过POST得到了img之后，就保存图片到本地
-@app.route('/uploadImage', methods=['POST']) #TODO: 图片格式判断
+@app.route('/api/uploadImage', methods=['POST']) #TODO: 图片格式判断
 def get_image():    # TODO:这是上传图片之后跳转到的url
     # Get the uploaded file
     img = request.files['file']    # img是一个FileStorage类型的对象
@@ -75,7 +74,7 @@ def get_image():    # TODO:这是上传图片之后跳转到的url
 
 """百科系统"""
 # 1.根据中文名/别名/学名查询植物
-@app.route('/searchName', methods=['GET'])
+@app.route('/api/searchName', methods=['GET'])
 def query_by_name():
     # name是客户端输入的主体内容
     name = request.args.get('name') # TODO:'name'是form框的名字
@@ -85,12 +84,12 @@ def query_by_name():
     # 返回的name list是用来展示候选的植物选项的
 
 # 2.按分类浏览
-@app.route('/classification', methods=['GET'])
+@app.route('/api/classification', methods=['GET'])
 def query_by_classification():
     # 点进了“按分类浏览”后，进入本页面
     return pedia.get_kingdom()  # type: list[str]
 
-@app.route('/kingdom', methods=['GET'])
+@app.route('/api/kingdom', methods=['GET'])
 def kingdom2phylum():
     # 点击了某kingdom，如“植物界”之后，进入本页面
     # 并返回渲染phylum的表单选项
@@ -100,7 +99,7 @@ def kingdom2phylum():
     return phylum_lst  # type: list[str]
 
 
-@app.route('/phylum', methods=['GET'])
+@app.route('/api/phylum', methods=['GET'])
 def phylum2class():
     # 点击了某phylum之后，进入本页面
     # 并返回渲染class的表单选项
@@ -109,7 +108,7 @@ def phylum2class():
     class_lst = pedia.get_class(phylum)
     return class_lst  # type: list[str]
 
-@app.route('/class', methods=['GET'])
+@app.route('/api/class', methods=['GET'])
 def class2order():
     # 点击了某class之后，进入本页面
     # 并返回渲染order的表单选项
@@ -118,7 +117,7 @@ def class2order():
     order_lst = pedia.get_order(class_name)
     return order_lst  # type: list[str]
 
-@app.route('/order', methods=['GET'])
+@app.route('/api/order', methods=['GET'])
 def order2family():
     # 点击了某order之后，进入本页面
     # 并返回渲染family的表单选项
@@ -127,7 +126,7 @@ def order2family():
     family_lst = pedia.get_family(order)
     return family_lst  # type: list[str]
 
-@app.route('/family', methods=['GET'])
+@app.route('/api/family', methods=['GET'])
 def family2genus():
     # 点击了某family之后，进入本页面
     # 并返回渲染genus的表单选项
@@ -136,7 +135,7 @@ def family2genus():
     genus_lst = pedia.get_genus(family)
     return genus_lst  # type: list[str]
 
-@app.route('/genus', methods=['GET'])
+@app.route('/api/genus', methods=['GET'])
 def query_genus():
     # 点击了某个genus之后，进入本页面
     # 并返回渲染所有植物的名字
@@ -148,26 +147,26 @@ def query_genus():
 
 
 # 3.根据国家/地区/省份查询
-@app.route('/distribution', methods=['GET'])
+@app.route('/api/distribution', methods=['GET'])
 def query_by_location():
     # 点进了“按地点浏览”后，进入本页面
     return pedia.get_country() # type: list[str]
 
-@app.route('/country', methods=['GET'])
+@app.route('/api/country', methods=['GET'])
 def country2area():  
     # 选择了“中国”之后进入该页面，渲染输出area的选项表单
     country = request.args.get("country")
     area_lst = pedia.get_area(country)
     return area_lst # type: list[str]
 
-@app.route('/area', methods=['GET'])
+@app.route('/api/area', methods=['GET'])
 def area2province():
     # 选择了某地区如“长江流域”之后进入该页面，渲染输出province的选项表单
     area = request.args.get("area")
     province_lst = pedia.get_province(area)
     return province_lst # type: list[str]
 
-@app.route('/province', methods=['GET'])
+@app.route('/api/province', methods=['GET'])
 def query_province():
     # 选择了某个省份如“重庆”之后进入该页面，渲染输出在重庆的所有植物名的选项表单
     # 获取该province中的所有植物名

@@ -47,7 +47,6 @@ header {
 
 .index-entrance {
   padding-top: 150px;
-  text-align: center;
 }
 
 .nav-link {

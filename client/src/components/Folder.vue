@@ -44,77 +44,77 @@ onMounted(() => {
     nextProps.value = { currentAttribute: getNextAttribute(), openedFolder: getNextOpenFolder() }
 
     if (props.currentAttribute == "genus") {
-        axios.get("http://localhost:8080/genus", { params: { genus: props.currentFolderName } }).then(
+        axios.get("/api/genus", { params: { genus: props.currentFolderName } }).then(
             (response) => {
                 let data = response.data
                 Items.value = data
             }
         )
     } else if (props.currentAttribute == "family") {
-        axios.get("http://localhost:8080/family", { params: { family: props.currentFolderName } }).then(
+        axios.get("/api/family", { params: { family: props.currentFolderName } }).then(
             (response) => {
                 let data = response.data
                 Items.value = data
             }
         )
     } else if (props.currentAttribute == "order") {
-        axios.get("http://localhost:8080/order", { params: { order: props.currentFolderName } }).then(
+        axios.get("/api/order", { params: { order: props.currentFolderName } }).then(
             (response) => {
                 let data = response.data
                 Items.value = data
             }
         )
     } else if (props.currentAttribute == "class") {
-        axios.get("http://localhost:8080/class", { params: { class: props.currentFolderName } }).then(
+        axios.get("/api/class", { params: { class: props.currentFolderName } }).then(
             (response) => {
                 let data = response.data
                 Items.value = data
             }
         )
     } else if (props.currentAttribute == "phylum") {
-        axios.get("http://localhost:8080/phylum", { params: { phylum: props.currentFolderName } }).then(
+        axios.get("/api/phylum", { params: { phylum: props.currentFolderName } }).then(
             (response) => {
                 let data = response.data
                 Items.value = data
             }
         )
     } else if (props.currentAttribute == "kingdom") {
-        axios.get("http://localhost:8080/kingdom", { params: { kingdom: props.currentFolderName } }).then(
+        axios.get("/api/kingdom", { params: { kingdom: props.currentFolderName } }).then(
             (response) => {
                 let data = response.data
                 Items.value = data
             }
         )
     } else if (props.currentAttribute == "classification") {
-        axios.get("http://localhost:8080/classification").then(
+        axios.get("/api/classification").then(
             (response) => {
                 let data = response.data
                 Items.value = data
             }
         )
     } else if (props.currentAttribute == "distribution") {
-        axios.get("http://localhost:8080/distribution").then(
+        axios.get("/api/distribution").then(
             (response) => {
                 let data = response.data
                 Items.value = data
             }
         )
     } else if (props.currentAttribute == "country") {
-        axios.get("http://localhost:8080/country", { params: { country: props.currentFolderName } }).then(
+        axios.get("/api/country", { params: { country: props.currentFolderName } }).then(
             (response) => {
                 let data = response.data
                 Items.value = data
             }
         )
     } else if (props.currentAttribute == "area") {
-        axios.get("http://localhost:8080/area", { params: { area: props.currentFolderName } }).then(
+        axios.get("/api/area", { params: { area: props.currentFolderName } }).then(
             (response) => {
                 let data = response.data
                 Items.value = data
             }
         )
     } else if (props.currentAttribute == "province") {
-        axios.get("http://localhost:8080/province", { params: { province: props.currentFolderName } }).then(
+        axios.get("/api/province", { params: { province: props.currentFolderName } }).then(
             (response) => {
                 let data = response.data
                 Items.value = data

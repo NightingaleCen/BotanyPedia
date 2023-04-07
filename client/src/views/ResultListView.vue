@@ -20,7 +20,7 @@ const props = defineProps(["queryValue"])
 const resultItems = ref([])
 
 onMounted(() => {
-    axios.get("http://localhost:8080/searchName", { params: { name: props.queryValue } }).then(
+    axios.get("/api/searchName", { params: { name: props.queryValue } }).then(
         (response) => {
             let data = response.data
             resultItems.value = data

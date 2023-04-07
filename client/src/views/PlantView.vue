@@ -41,10 +41,10 @@ const currentComponent = computed(() => { return showComponent.value })
 
 // just for test
 onMounted(() => {
-    axios.get("http://localhost:8080/queryInfo", { params: { name: props.canonicalName } }).then(
+    axios.get("/api/queryInfo", { params: { name: props.canonicalName } }).then(
         (response) => {
             let data = response.data
-            info.value.imageLink = "http://localhost:8080" + data['image']
+            info.value.imageLink = data['image']
             info.value.chineseName = data['中文名'][0]
             info.value.nickname = data['别名']
             info.value.canonicalName = props.canonicalName
