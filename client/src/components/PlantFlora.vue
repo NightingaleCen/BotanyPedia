@@ -11,11 +11,11 @@
                     info.family[info.family.length - 1]
                 }}</var-breadcrumb>
             </RouterLink>
-            <var-breadcrumb>{{ info.chineseName }}</var-breadcrumb>
+            <var-breadcrumb>{{ info.chineseName[0] }}</var-breadcrumb>
         </var-breadcrumbs>
-        <var-card class="flora-card" :title="info.chineseName" :subtitle="info.canonicalName">
+        <var-card class="flora-card" :title="info.chineseName[0]" :subtitle="info.canonicalName">
             <template #description>
-                <div class="flora-text" v-html="info.description"></div>
+                <div class="flora-text" v-html="info.description[0].replace(/\r\n/g, '<br>&emsp;&emsp;')"></div>
             </template>
         </var-card>
         <!--添加引用出处-->

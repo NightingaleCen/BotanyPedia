@@ -1,6 +1,6 @@
 <template>
     <div>
-        <var-cell :title="chineseName" :description="canonicalName" @click="jump">
+        <var-cell :title="chineseName[0]" :description="canonicalName" @click="jump">
             <template #extra>
                 <var-icon :name="imageLink" :size="50" />
             </template>
@@ -22,7 +22,7 @@ onMounted(() => {
         (response) => {
             let data = response.data
             imageLink.value = data['image']
-            chineseName.value = data['中文名'][0]
+            chineseName.value = data['中文名']
         }
     )
 })

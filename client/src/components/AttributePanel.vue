@@ -1,7 +1,7 @@
 <template>
     <div class="attribute-panel">
         <p class="attribute-item">学名：<span class="attribute-canonical-name">{{ info.canonicalName }}</span></p>
-        <p class="attribute-item">中文名：<span>{{ info.chineseName }}</span></p>
+        <p class="attribute-item">中文名：<span>{{ info.chineseName[0] }}</span></p>
         <p class="attribute-item" v-if="info.nickname !== undefined">别名：<span>{{ info.nickname.join('、') }}</span></p>
         <p class="attribute-item">
             植物学分类：
@@ -16,7 +16,7 @@
             </var-breadcrumbs>
         </p>
         <p class="attribute-item" v-if="info.lifeForm !== undefined">
-            生活型：<span>{{ info.lifeForm }}</span>
+            生活型：<span>{{ info.lifeForm[0] }}</span>
         </p>
         <p class="attribute-item" v-if="info.leafColor !== undefined">
             叶片颜色：<span>{{ info.leafColor.join("、") }}</span>

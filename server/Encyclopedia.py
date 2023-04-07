@@ -56,7 +56,7 @@ class Encyclopedia():
     #TODO:根据前端进行修改
     def output(self, string):
         """输出到终端。目前是标准输出，但之后可能是对接前端"""
-        print(string, end='')
+        #print(string, end='')
         return string
 
     def output_node_attributes(self, attris, node_attri_dict, template_dict, isFamilyOutput=False, returnString=False):
@@ -130,7 +130,7 @@ class Encyclopedia():
         node = n_matcher.match("Species", name=plant_sci_name)
 
         # 1.根据学名，查找结点属性
-        self.output('您要查询的植物为:'+plant_sci_name+'。\n')
+        #self.output('您要查询的植物为:'+plant_sci_name+'。\n')
         node_attri_dict = dict(node.all()[0]) # type(node.all()[0]) == Node
         for key in node_attri_dict:
             if type(node_attri_dict[key]) == str:

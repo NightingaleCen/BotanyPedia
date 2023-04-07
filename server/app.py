@@ -1,7 +1,7 @@
-from flask import Flask, request, redirect, url_for, abort, render_template, send_file
+from flask import Flask, request, send_file
 from flask_cors import *
 from PlantInferer import *
-import os 
+import datetime
 from Encyclopedia import Encyclopedia
 app = Flask(__name__)
 CORS(app, resources={r'/*': {'origins': '*'}}) 
@@ -11,7 +11,9 @@ inferer = Classifier()
 # 根据植物学名，返回植物指定属性的值
 @app.route('/api/queryInfo', methods=['GET'])
 def query():
-    name = request.args.get('name') # 获取学名 TODO:两种获取方式
+    name = request.args.get('name')
+    log(f'Query Info: {name}') # for monitoring
+
     plant_dict = pedia.query(name)  # {attri1: ..., atrri2: ...}
     
     attri_wanted_lst = request.args.get('attribute')   # 获取所指定的性状 type:list
@@ -67,6 +69,8 @@ def get_image():    # TODO:这是上传图片之后跳转到的url
 
     result = inferer.infer(img)
     result = {key:float(value) for (key, value) in result.items() if (value/max(result.values()))> 0.3}
+    log(f'Classification: {result}') # for monitoring
+
     # Return a success response
     return result
 
@@ -174,3 +178,9 @@ def query_province():
     plant_list = pedia.query_province(province)
     # 这个plant_list用来展示所有候选选项
     return plant_list   # type: list[str]
+
+def log(text):
+    now = datetime.datetime.now()
+    time_stamp = now.strftime("%Y-%m-%d %H:%M:%S")
+    with open('query.log','a') as f:
+        f.write(f'{time_stamp}\n{text}\n')
