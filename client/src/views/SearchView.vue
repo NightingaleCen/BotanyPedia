@@ -41,7 +41,6 @@ function submitImage(file) {
     axios.post("/api/uploadImage", formData, {
         headers: { "Content-Type": "multipart/form-data" }
     }).then((response) => {
-        console.log(response.data)
         candidatesAndProbs.value = response.data
         if (Object.keys(candidatesAndProbs.value).length === 1) {
             // 如果返回的是确定的结果，则直接展示
