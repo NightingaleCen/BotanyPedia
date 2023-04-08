@@ -7,7 +7,8 @@ import BookIcon from '../components/icons/IconBook.vue'
 <template>
   <header>
     <img src="../assets/logo.jpeg" class="logo" alt="Logo">
-    <h1 class="title">LeafyLingo</h1>
+    <h1 class="title">叶语花鸣</h1>
+    <p class="title">LeafyLingo</p>
   </header>
   <var-row class="index-entrance">
     <var-col :span="12">
@@ -41,12 +42,20 @@ header {
 .title {
   text-align: center;
   margin: 0;
-  font-size: 40px;
   color: #2E8540;
+}
+
+h1 {
+  font-size: 40px;
+  font-weight: bold;
 }
 
 .index-entrance {
   padding-top: 150px;
+}
+
+p.title {
+  margin-top: -10px;
 }
 
 .nav-link {
