@@ -23,6 +23,11 @@ export default defineConfig({
         target: 'http://139.9.75.222:8080/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '') // 不可以省略rewrite
+      },
+      '/getLocation':{
+        target:'https://www.ipplus360.com/getLocation',
+        changeOrigin:true,
+        rewrite: (path) => path.replace(/^\/getLocation/, '')
       }
     }
   },

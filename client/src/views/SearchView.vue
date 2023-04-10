@@ -1,7 +1,7 @@
 <template>
     <BackButton />
     <SearchUploader @submit=submitImage />
-    <var-popup v-model:show="showPopup">
+    <var-popup class="popup-window" v-model:show="showPopup" @closed="closePopup">
         <Loading v-if="isLoading" />
         <SearchResult v-if="isDisplayingResult" :canonical-name="canonicalName" />
         <OptionPanel v-if="isDisplayingOptions" :attributes="candidatesAttributes" @choice-made="makeChoice" />
@@ -29,6 +29,12 @@ const candidatesAttributes = ref({})
 const candidatesAndProbs = ref({})
 const choiceCount = ref(0)
 
+function closePopup() {
+    isLoading.value = false
+    isDisplayingOptions.value = false
+    isDisplayingResult.value = false
+    choiceCount.value = false
+}
 
 
 function submitImage(file) {
@@ -151,3 +157,9 @@ function filterCandidates(candidatesAndProbs) {
 }
 
 </script>
+
+<style>
+.popup-window {
+    max-width: 90%;
+}
+</style>

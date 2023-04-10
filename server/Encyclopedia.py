@@ -252,7 +252,7 @@ class Encyclopedia():
                             pop_attris.append(key)
                     for key in pop_attris:
                         node_attri_dict.pop(key)
-                    node_attri_dict['image'] = '/images/%s.jpg' % plant_sci_name
+                    # node_attri_dict['image'] = '/images/%s.jpg' % plant_sci_name
                     # node_attri_dict.pop('描述')
                     # node_attri_dict.pop('name')
                     plant_chara_dict[plant_sci_name] = node_attri_dict
