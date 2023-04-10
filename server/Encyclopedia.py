@@ -334,6 +334,8 @@ class Encyclopedia():
                 for attri in common_but_different_attri:
                     return_dict[attri] = {}
                     for plant in preliminary_results:
+                        if 'province' in attri and plant_chara_dict[plant][attri] == []:
+                            continue
                         return_dict[attri][plant] = plant_chara_dict[plant][attri]
                 return return_dict
             
