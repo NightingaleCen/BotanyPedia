@@ -1,7 +1,7 @@
 from py2neo import *
 import os 
 import json
-
+import itertools
 
 class Encyclopedia():
     def __init__(self) -> None:
@@ -242,11 +242,19 @@ class Encyclopedia():
                 plant_chara_dict = {}   # {plant1: {chara_name1:chara1value, chara_name2:chara2value}, plant2: {...}},是dict[dict]
                 chara_plant_dict = {}   # {chara_name1: [plant1, plant2,...]},是dict[list]
                 for plant_sci_name in preliminary_results:
-                    n_matcher = NodeMatcher(self.graph)
-                    node = n_matcher.match("Species", name=plant_sci_name)
-                    node_attri_dict = dict(node.all()[0])
+                    # n_matcher = NodeMatcher(self.graph)
+                    # node = n_matcher.match("Species", name=plant_sci_name)
+                    # node_attri_dict = dict(node.all()[0])
+                    node_attri_dict = self.query(plant_sci_name)
+                    pop_attris = []
+                    for key in node_attri_dict:
+                        if not(('形状' in key) or ('颜色' in key) or ('生活型' in key) or ('province' in key)):
+                            pop_attris.append(key)
+                    for key in pop_attris:
+                        node_attri_dict.pop(key)
+                    node_attri_dict['image'] = '/images/%s.jpg' % plant_sci_name
                     # node_attri_dict.pop('描述')
-                    node_attri_dict.pop('name')
+                    # node_attri_dict.pop('name')
                     plant_chara_dict[plant_sci_name] = node_attri_dict
                     for chara_name in node_attri_dict:
                         if chara_name not in chara_plant_dict:
@@ -265,43 +273,67 @@ class Encyclopedia():
 
 
                 def isDifferent(values1, values2):
-                    flag = False
+                    different = False
                     if type(values1) == type(values2):
                         if type(values1) == list:
                             set1, set2 = set(values1), set(values2)
-                            flag = not(set1.issubset(set2) or set2.issubset(set1))
+                            different = not(set1.issubset(set2) or set2.issubset(set1))
                         elif type(values1) == str:
-                            flag = not(values1 == values2)
+                            different = not(values1 == values2)
                         else:
                             # 双方为空
                             return False
                     else:
                         # 双方不同且非空
                         if (type(values1) == str or type(values1) == list) and (type(values2) == str or type(values2) == list):
-                            flag = True
+                            different = True
                         else:
                             return False
                     
-                    return flag
+                    return different
+                
+                def generatePairs(preliminary_results_plant_list):
+                    pairs = list(itertools.combinations(preliminary_results_plant_list, 2))
+                    return pairs
+
+
                 preliminary_results_plant_list = preliminary_results
                 common_but_different_attri = []
+                plant_pairs = generatePairs(preliminary_results_plant_list)
                 for chara_name in common_charas:
                     # print(preliminary_results[1:3])
-                    plant_pairs = [(p1, p2) for p1 in preliminary_results_plant_list for p2 in preliminary_results_plant_list if p1 != p2]
-                    all_different = False
-                    for (plant1, plant2) in plant_pairs:
-                        if not isDifferent(plant_chara_dict[plant1][chara_name], plant_chara_dict[plant2][chara_name]):
-                            all_different = True
-                    if not all_different:
+                    
+                    if 'province' in chara_name:
+                        # 如果是地理位置的话
+                        joint_common_provinces = set()
+                        for (plant1, plant2) in plant_pairs:
+                            province_set1 = set(plant_chara_dict[plant1]['province']) if type(plant_chara_dict[plant1]['province']) == list else {}
+                            province_set2 = set(plant_chara_dict[plant2]['province']) if type(plant_chara_dict[plant2]['province']) == list else {}
+                            intersection = province_set1.intersection(province_set2)
+                            joint_common_provinces = joint_common_provinces.union(intersection)
+                        for plant in preliminary_results_plant_list:
+                            if type(plant_chara_dict[plant]['province']) == list:
+                                plant_chara_dict[plant]['province'] = list(set(plant_chara_dict[plant]['province']) - joint_common_provinces.union(intersection))
+                            else:
+                                # 如果为空
+                                plant_chara_dict[plant]['province'] = []
                         common_but_different_attri.append(chara_name)
-                
-                
+                    else:
+                        is_different_dict = {}
+                        all_different = True
+                        for (plant1, plant2) in plant_pairs:
+                            is_different_dict[(plant1, plant2)] = isDifferent(plant_chara_dict[plant1][chara_name], plant_chara_dict[plant2][chara_name])
+                        for pair in is_different_dict:
+                            if is_different_dict[pair] == False:
+                                all_different = False
+                        if all_different:
+                            common_but_different_attri.append(chara_name)
+                # TODO:修改！
                 return_dict = {}
                 for attri in common_but_different_attri:
-                    if '形状' in attri or '颜色' in attri:
-                        return_dict[attri] = {}
-                        for plant in preliminary_results:
-                            return_dict[attri][plant] = plant_chara_dict[plant][attri]
+                    return_dict[attri] = {}
+                    for plant in preliminary_results:
+                        return_dict[attri][plant] = plant_chara_dict[plant][attri]
                 return return_dict
             
             else:
@@ -568,8 +600,8 @@ class Encyclopedia():
 
 if __name__ == '__main__':
     pedia = Encyclopedia()
-    #pedia.query('Prunus mume')
-    #pedia.integrate_information(['Vitis amurensis', 'Vitis vinifera'])
+    # pedia.query('Prunus mume')
+    pedia.integrate_information(['Vitis amurensis', 'Vitis vinifera', 'Prunus mume'])
     #pedia.integrate_information(['Prunus mume'])
     # pedia.query_by_basic_attris()
     # pedia.query_by_names('花')
