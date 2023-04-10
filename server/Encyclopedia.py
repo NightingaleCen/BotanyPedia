@@ -310,7 +310,8 @@ class Encyclopedia():
                             province_set1 = set(plant_chara_dict[plant1]['province']) if type(plant_chara_dict[plant1]['province']) == list else {}
                             province_set2 = set(plant_chara_dict[plant2]['province']) if type(plant_chara_dict[plant2]['province']) == list else {}
                             intersection = province_set1.intersection(province_set2)
-                            joint_common_provinces = joint_common_provinces.union(intersection)
+                            # joint_common_provinces = joint_common_provinces.union(intersection)
+                            joint_common_provinces = joint_common_provinces.intersection(intersection)
                         for plant in preliminary_results_plant_list:
                             if type(plant_chara_dict[plant]['province']) == list:
                                 plant_chara_dict[plant]['province'] = list(set(plant_chara_dict[plant]['province']) - joint_common_provinces.union(intersection))
