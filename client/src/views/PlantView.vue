@@ -3,7 +3,7 @@
     <div class="plant-display">
         <var-image class="plant-image" :src="info.imageLink" fit="cover" height="300px" weight="280px" />
         <p class="canonical-name">{{ canonicalName }}</p>
-        <p class="chinese-name">{{ info.chineseName }}</p>
+        <p class="chinese-name">{{ info.chineseName[0] }}</p>
     </div>
     <div class="div-button">
         <var-button block color="#2E8540" text-color="#fff" class="util-button" @click="showPopup(PlantFlora)">
@@ -41,16 +41,16 @@ const currentComponent = computed(() => { return showComponent.value })
 
 // just for test
 onMounted(() => {
-    axios.get("http://localhost:8080/queryInfo", { params: { name: props.canonicalName } }).then(
+    axios.get("/api/queryInfo", { params: { name: props.canonicalName } }).then(
         (response) => {
             let data = response.data
-            info.value.imageLink = "http://localhost:8080" + data['image']
-            info.value.chineseName = data['中文名'][0]
+            info.value.imageLink = data['image']
+            info.value.chineseName = data['中文名']
             info.value.nickname = data['别名']
             info.value.canonicalName = props.canonicalName
             info.value.family = [data.kingdom, data.phylum, data.class, data.order, data.family, data.genus]
-            info.value.description = data['描述'][0].replace(/\r\n/g, "<br>&emsp;&emsp;")
-            info.value.lifeForm = data['生活型'][0]
+            info.value.description = data['描述']
+            info.value.lifeForm = data['生活型']
             info.value.leafShape = data['叶片形状']
             info.value.leafColor = data['叶片颜色']
             info.value.flowerShape = data['花朵形状']

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <var-cell :title="chineseName" :description="canonicalName" @click="jump">
+        <var-cell :title="chineseName[0]" :description="canonicalName" @click="jump">
             <template #extra>
                 <var-icon :name="imageLink" :size="50" />
             </template>
@@ -18,11 +18,11 @@ const chineseName = ref('')
 const imageLink = ref('')
 
 onMounted(() => {
-    axios.get("http://localhost:8080/queryInfo", { params: { name: props.canonicalName } }).then(
+    axios.get("/api/queryInfo", { params: { name: props.canonicalName } }).then(
         (response) => {
             let data = response.data
-            imageLink.value = "http://localhost:8080" + data['image']
-            chineseName.value = data['中文名'][0]
+            imageLink.value = data['image']
+            chineseName.value = data['中文名']
         }
     )
 })

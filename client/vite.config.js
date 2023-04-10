@@ -17,7 +17,15 @@ export default defineConfig({
       resolvers: [VarletUIResolver({ autoImport: true })],
     }),
   ],
-
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://139.9.75.222:8080/api',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '') // 不可以省略rewrite
+      }
+    }
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

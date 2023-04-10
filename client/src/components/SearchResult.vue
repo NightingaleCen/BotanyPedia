@@ -18,10 +18,10 @@ const imageLink = ref("")
 const chineseName = ref("")
 
 onMounted(() => {
-    axios.get("http://localhost:8080/queryInfo", { params: { name: props.canonicalName } }).then(
+    axios.get("/api/queryInfo", { params: { name: props.canonicalName } }).then(
         (response) => {
             let data = response.data
-            imageLink.value = "http://localhost:8080" + data['image']
+            imageLink.value = data['image']
             chineseName.value = data['中文名'][0]
         }
     )
